@@ -1,19 +1,14 @@
-# our base image
-FROM alpine:3.5
+FROM python:3.9-slim
 
-# Install python and pip
-RUN apk add --update py2-pip
+WORKDIR /usr/src/app
 
-# install Python modules needed by the Python app
-COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r /usr/src/app/requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
 
-# copy files required for the app to run
-COPY app.py /usr/src/app/
-COPY templates/index.html /usr/src/app/templates/
+COPY . .
 
-# tell the port number the container should expose
 EXPOSE 5000
 
-# run the application
-CMD ["python", "/usr/src/app/app.py"]
+ENV NAME World
+
+CMD ["python", "app.py"]
