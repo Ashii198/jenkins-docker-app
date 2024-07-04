@@ -1,7 +1,6 @@
 provider "aws" {
   region     = "us-east-1"
-  access_key = var.aws_access_key
-  secret_key = var.aws_secret_key
+
 }
 
 resource "aws_security_group" "deployment_sg" {
@@ -58,7 +57,4 @@ resource "aws_instance" "deployment" {
 data "aws_vpc" "default" {
   default = true
 }
-
-variable "aws_access_key" {}
-variable "aws_secret_key" {}
 
