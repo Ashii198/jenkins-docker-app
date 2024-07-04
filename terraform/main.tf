@@ -50,6 +50,21 @@ resource "aws_instance" "deployment" {
   instance_type = "t2.micro"
   security_groups = [aws_security_group.deployment_sg.name]
 
+user_data = <<-EOF
+              #!/bin/bash
+              sudo apt-get update
+              sudo apt install apt-transport-https ca-certificates curl software-properties-common -y              sudo systemctl start docker
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+              sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+              apt-cache policy docker-ce
+              sudo apt install docker-ce -y           
+              sudo systemctl enable docker
+
+              sudo docker pull your-dockerhub-rajjo103/pythonapp:latest
+              sudo docker run -d -p 8081:5000 rajjo103/pythonapp:latest
+              EOF
+
+
   tags = {
     Name = "deployment"
   }
