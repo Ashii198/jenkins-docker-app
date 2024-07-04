@@ -46,7 +46,7 @@ resource "aws_security_group" "deployment_sg" {
 }
 
 resource "aws_instance" "deployment" {
-  ami           = "ami-0c55b159cbfafe1f0" # Ubuntu Server 20.04 LTS AMI ID for us-east-1 (N. Virginia)
+  ami           = "ami-04a81a99f5ec58529" # Ubuntu Server 20.04 LTS AMI ID for us-east-1 (N. Virginia)
   instance_type = "t2.micro"
   security_groups = [aws_security_group.deployment_sg.name]
 
