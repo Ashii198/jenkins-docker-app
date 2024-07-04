@@ -2,7 +2,6 @@ provider "aws" {
   region     = "us-east-1"
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
-
 }
 
 resource "aws_security_group" "deployment_sg" {
@@ -23,17 +22,6 @@ resource "aws_security_group" "deployment_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-variable "aws_access_key" {
-  description = "The AWS access key"
-  type        = string
-}
-
-variable "aws_secret_key" {
-  description = "The AWS secret key"
-  type        = string
-}
-
 
   ingress {
     from_port   = 8081
