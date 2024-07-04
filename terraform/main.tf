@@ -22,6 +22,17 @@ resource "aws_security_group" "deployment_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+variable "aws_access_key" {
+  description = "The AWS access key"
+  type        = string
+}
+
+variable "aws_secret_key" {
+  description = "The AWS secret key"
+  type        = string
+}
+
+
   ingress {
     from_port   = 8081
     to_port     = 8081
