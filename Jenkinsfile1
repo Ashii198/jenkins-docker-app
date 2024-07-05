@@ -1,0 +1,45 @@
+// This pipeline is for checking out the code from github, creation of docker image and pushing the docker  image to dockerhub.
+
+
+pipeline {
+    agent any
+
+    environment {
+        dockerImage = ''
+        registry = 'rajjo103/pythonapp'
+        registryCredential = 'dockerhub_id'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                          extensions: [], 
+                          userRemoteConfigs: [[url: 'https://github.com/rajaniekunde/jenkins-docker.git']]])
+            }
+        }
+        stage('Building Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}:${env.BUILD_ID}")
+                }
+            }
+        }
+        stage('Uploading Image to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry('', registryCredential) {
+                        dockerImage.push("${env.BUILD_ID}")
+                        dockerImage.push('latest')
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
