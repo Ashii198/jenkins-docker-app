@@ -1,0 +1,54 @@
+// This pipeline is for creation of EC2 server using terraform, and installing docker on the EC2, creation of  container using the docker image form docker-hub.
+
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from Git repository
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/rajaniekunde/jenkins-docker.git']]])
+                
+                
+            }
+        }
+        stage('Terraform Init') {
+            steps {
+                script {
+                    dir('terraform') {
+                        if (!fileExists('main.tf')) {
+                            error "No Terraform configuration files found."
+                        }
+                        sh 'terraform init'
+                    }
+                }
+            }
+        }
+        stage('Terraform Plan') {
+            steps {
+                script {
+                    dir('terraform') {
+                        // Generate and save terraform plan
+                        sh """
+                        terraform plan -out=tfplan \
+                            -var="aws_access_key=your-aws-access-key" \
+                            -var="aws_secret_key=your-aws-access-secret-key"
+                        """
+                    }
+                }
+            }
+        }
+        stage('Terraform Apply') {
+            steps {
+                script {
+                    dir('terraform') {
+                        // Apply Terraform changes
+                        sh 'terraform apply -auto-approve tfplan'
+                    }
+                }
+            }
+        }
+    }
+    
+}
+
