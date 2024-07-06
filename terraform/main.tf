@@ -67,8 +67,8 @@ user_data = <<-EOF
               sudo apt install docker-ce -y           
               sudo systemctl enable docker
 
-              sudo docker pull your-dockerhub-rajjo103/pythonapp:latest
-              sudo docker run -d -p 8081:5000 rajjo103/pythonapp:latest
+              sudo docker pull as3h/pythonapp:latest
+              sudo docker run -d -p 8081:5000 as3h/pythonapp:latest
               EOF
 
 
